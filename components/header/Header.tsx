@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsLayoutSidebarInset } from "react-icons/bs";
 import { LuZoomIn, LuZoomOut } from "react-icons/lu";
 
@@ -7,6 +7,10 @@ interface HeaderProps {
   handleZoomOut: () => void;
   handleScaleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   scale: number; // Current scale
+  pageNumber: number; // Current page number
+  numPages: number; // Total number of pages
+  setPageNumber: (page: number) => void; // Function to set page number
+  handlePageChange: (num: number) => void; // Function to handle page change
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -14,7 +18,13 @@ const Header: React.FC<HeaderProps> = ({
   handleZoomOut,
   handleScaleChange,
   scale,
+  pageNumber,
+  numPages,
+  setPageNumber,
+  handlePageChange,
 }) => {
+  const [inputPageNumber, setInputPageNumber] = useState(pageNumber);
+
   return (
     <div className="border border-b border-slate-200 shadow-sm h-[50px] flex flex-row justify-start p-3 items-center gap-5">
       {/* zoom in and zoom out button */}
@@ -24,12 +34,31 @@ const Header: React.FC<HeaderProps> = ({
         </button>
       </div>
       <div className="flex flex-row justify-center items-center gap-5 w-full">
-        <div className="flex flex-row justify-center w-fit items-center gap-3">
-          <button onClick={handleZoomIn}>
-            <LuZoomIn className="text-xl" />
+        {/* go page with click go button */}
+        <div className="goPage flex items-center gap-2 border border-slate-200 rounded-md overflow-hidden">
+          <input
+            type="text"
+            inputMode="numeric"
+            min="1"
+            max={numPages}
+            value={inputPageNumber}
+            onChange={(e) => setInputPageNumber(parseInt(e.target.value))}
+            className="p-1 w-10 text-center outline-none"
+          />
+          <span className="count pr-2">/ {numPages}</span>
+          <button
+            onClick={() => handlePageChange(inputPageNumber)}
+            className="px-3 border-l bg-slate-200 py-1"
+          >
+            Go
           </button>
+        </div>
+        <div className="flex flex-row justify-center w-fit items-center gap-3">
           <button onClick={handleZoomOut}>
             <LuZoomOut className="text-xl" />
+          </button>
+          <button onClick={handleZoomIn}>
+            <LuZoomIn className="text-xl" />
           </button>
         </div>
         <div>

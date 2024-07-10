@@ -90,10 +90,12 @@ const PDFView: React.FC = () => {
   useEffect(() => {
     const fetchPdf = async () => {
       try {
+        const response = await fetch("/api/encrypt-pdf");
+        const pdfBytes = await response.arrayBuffer();
         const loadingTask = pdfjsLib.getDocument({
-          url: "/01.pdf",
+          data: pdfBytes,
           password: "123456",
-        } as any); // Use 'any' type assertion here
+        } as any);
         const pdf = await loadingTask.promise;
         setPdfDoc(pdf);
         generateThumbnails(pdf);
@@ -139,6 +141,10 @@ const PDFView: React.FC = () => {
         handleZoomOut={handleZoomOut}
         handleScaleChange={handleScaleChange}
         scale={scale} // Pass current scale to Header
+        pageNumber={pageNumber} // Pass current page number to Header
+        numPages={pdfDoc?.numPages ?? 0} // Pass total number of pages to Header
+        setPageNumber={setPageNumber} // Pass setPageNumber function to Header
+        handlePageChange={handlePageChange} // Pass handlePageChange function to Header
       />
       <div className="w-full flex flex-row">
         <SideBar

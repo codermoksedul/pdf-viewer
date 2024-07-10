@@ -6,7 +6,7 @@ const ProtectionOptions: React.FC = () => {
     const handleContextMenu = (e: MouseEvent) => e.preventDefault();
     document.addEventListener("contextmenu", handleContextMenu);
 
-    // Disable printing
+    // Disable printing and text selection
     const style = document.createElement("style");
     style.innerHTML = `
       @media print {
@@ -40,11 +40,48 @@ const ProtectionOptions: React.FC = () => {
     document.addEventListener("selectstart", handleSelectStart);
     document.addEventListener("dragstart", handleDragStart);
 
+    // Disable specific keyboard keys
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const allowedKeys = [
+        "Backspace",
+        "Enter",
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowUp",
+        "ArrowDown",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "Numpad0",
+        "Numpad1",
+        "Numpad2",
+        "Numpad3",
+        "Numpad4",
+        "Numpad5",
+        "Numpad6",
+        "Numpad7",
+        "Numpad8",
+        "Numpad9",
+      ];
+      if (!allowedKeys.includes(e.key)) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+
     return () => {
       // Clean up event listeners and style on component unmount
       document.removeEventListener("contextmenu", handleContextMenu);
       document.removeEventListener("selectstart", handleSelectStart);
       document.removeEventListener("dragstart", handleDragStart);
+      document.removeEventListener("keydown", handleKeyDown);
       document.head.removeChild(style);
     };
   }, []);
@@ -67,6 +104,20 @@ const ProtectionOptions: React.FC = () => {
         onMouseDown={(e) => e.preventDefault()}
         onDragStart={(e) => e.preventDefault()}
       />
+      <div
+        className="watermark"
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          zIndex: 1000,
+          pointerEvents: "none",
+          opacity: 0.5,
+          fontSize: "3em",
+          color: "rgba(0, 0, 0, 0.1)",
+        }}
+      ></div>
     </div>
   );
 };
