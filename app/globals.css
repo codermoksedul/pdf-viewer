@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.pdf-view-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 200px;
+  background-color: #f5f5f5;
+  padding: 10px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+}
+
+.sidebar h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  position: sticky;
+  top: 0;
+  background-color: #f5f5f5;
+  padding: 10px 0;
+  z-index: 10;
+}
+
+.page-button {
+  display: block;
+  width: 100%;
+  margin: 5px 0;
+  padding: 10px;
+  background: none;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  text-align: left;
+}
+
+.page-button:hover {
+  background-color: #e0e0e0;
+}
+
+.main-view {
+  margin-left: 220px; /* To account for the fixed sidebar */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.controls {
+  margin-bottom: 20px;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  padding: 10px 0;
+  z-index: 10;
+  width: 100%;
+  text-align: center;
+}
+
+.controls button,
+.controls select {
+  margin: 0 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.pdf-canvas {
+  border: 1px solid #ddd;
+}
