@@ -89,10 +89,17 @@ const PDFView: React.FC = () => {
 
   useEffect(() => {
     const fetchPdf = async () => {
-      const loadingTask = pdfjsLib.getDocument("/01.pdf");
-      const pdf = await loadingTask.promise;
-      setPdfDoc(pdf);
-      generateThumbnails(pdf);
+      try {
+        const loadingTask = pdfjsLib.getDocument({
+          url: "/01.pdf",
+          password: "123456",
+        } as any); // Use 'any' type assertion here
+        const pdf = await loadingTask.promise;
+        setPdfDoc(pdf);
+        generateThumbnails(pdf);
+      } catch (error) {
+        console.error("Error loading PDF:", error);
+      }
     };
     fetchPdf();
   }, [generateThumbnails]);
